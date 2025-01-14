@@ -18,7 +18,7 @@ const getRooms = async(req,res) => {
 // Get single room
 const getRoom = async(req, res, next) => {
     try{
-        const room = await Room.findById(req.params.Id);
+        const room = await Room.findById(req.params.id);
         if(!room){
             res.status(400);
             throw new Error("Room not found");
@@ -46,7 +46,43 @@ const createRoom = async (req, res, next) => {
     }
 };
 
+// Update Room
+const updateRoom = async(req,res,next) => {
+    try{
+        const updatedRoom = await Room.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        }, {new: true});
+        if(!updatedRoom){
+            res.status(400);
+            throw new Error("There was a problem updating the room");
+        }
+        return res.status(201).json(updatedRoom);
+    }
+    catch(error){
+        next(error)
+    }
+}
+
+// Delete Room
+const deleteRoom = async(req, res, next) => {
+    try{
+        const room = await Room.findByIdAndDelete(req.params.id);
+
+        if(!room){
+            res.status(400);
+            throw new Error("There was a problem deleting the room");
+        }
+        return res.status(201).json("Room Deleted Successfully");
+    }
+    catch(error){
+        next(error);
+    }
+}
+
 module.exports = {
     getRooms,
-    createRoom
+    createRoom,
+    getRoom,
+    updateRoom,
+    deleteRoom
 };

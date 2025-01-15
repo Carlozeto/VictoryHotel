@@ -4,7 +4,10 @@ const app = express();
 const connectDB = require("./config/db");
 const roomRoutes = require("./routes/roomRoutes")
 const bookingRoutes = require("./routes/bookingRoutes")
+const userRoutes = require("./routes/userRouter")
 const {errorHandler} = require("./middleware/errorHandler")
+const cookieParser = require ("cookie-parser");
+const { auth } = require("./middleware/authMiddleware");
 
 const port = process.env.PORT || 5000;
 
@@ -12,13 +15,16 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 //Middlewares
-app.use(express.json())
+app.use(cookieParser());
+app.use(express.json());
+
+//Authentication
+app.use("/auth", auth)
 
 //Routes
 app.use("/api/rooms", roomRoutes);
-
-//Booking
 app.use("/api/booking", bookingRoutes);
+app.use("/api/users", userRoutes);
 
 app.use(errorHandler);
 

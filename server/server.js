@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const connectDB = require("./config/db");
 const roomRoutes = require("./routes/roomRoutes")
+const bookingRoutes = require("./routes/bookingRoutes")
 const {errorHandler} = require("./middleware/errorHandler")
 
 const port = process.env.PORT || 5000;
@@ -14,7 +15,10 @@ connectDB();
 app.use(express.json())
 
 //Routes
-app.use("/api/rooms", roomRoutes)
+app.use("/api/rooms", roomRoutes);
+
+//Booking
+app.use("/api/booking", bookingRoutes);
 
 app.use(errorHandler);
 

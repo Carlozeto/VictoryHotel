@@ -78,6 +78,18 @@ const loginUser = async(req, res, next) =>{
     }
 }
 
+const logoutUser = async(req,res,next) =>{
+    try {
+    // Set the cookie with an empty value and expired option
+    res.cookie("jwt", "", { expiresIn: "-1" });
+
+    // Now send the response with the logout message
+    return res.json({ message: "Logged Out" });
+  } catch (error) {
+    next(error);
+  }
+}
+
 // Update User
 const updateUser = async(req,res,next) => {
     try{
@@ -117,7 +129,8 @@ module.exports = {
     getUsers,
     createUser,
     loginUser,
+    logoutUser,
     getUser,
     updateUser,
     deleteUser
-}
+} 
